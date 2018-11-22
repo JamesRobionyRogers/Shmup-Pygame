@@ -15,6 +15,7 @@ Traceback (most recent call last):
 TypeError: 'NoneType' object is not subscriptable
   
 
+
 And this the Error when I get hit by the meteor:
 
 Traceback (most recent call last):
@@ -27,4 +28,4 @@ TypeError: 'NoneType' object is not subscriptable
   
   
   Thank you very much in advance for any help! 
-  - James 
+  - Thanks, James 
