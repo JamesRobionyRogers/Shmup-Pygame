@@ -1,6 +1,4 @@
 # shmup 
-Shoot 'em up (shmup) game from KidsCanCode's youtube series, Game Development with Pygame 
-https://www.youtube.com/playlist?list=PLsk-HSGFjnaH5yghzu7PcOzm9NhsW0Urw
 
 (Code is inside the folder named "shmup")
 I currently have an error when I shoot a meteor (or when i get hit by a meteor), I believe it happens when the explosion animation is trying to happen. Please help if you can, and Thank you very much in advance! 
