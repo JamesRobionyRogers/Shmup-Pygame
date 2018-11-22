@@ -1,7 +1,7 @@
 # shmup 
 
 (Code is inside the folder named "shmup")
-I currently have an error when I shoot a meteor (or when i get hit by a meteor), I believe it happens when the explosion animation is trying to happen. Please help if you can, and Thank you very much in advance! 
+I currently have an error when I shoot a meteor (or when i get hit by a meteor), I believe it happens when the explosion animation is trying to happen. Please help if you can, and Thank you very much in advance!      (Note: I am using Python 3.7 is that's any help)
 
 # Errors 
 This is the Error when I shoot a meteor: 
