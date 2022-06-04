@@ -1,3 +1,4 @@
+<!-- Shoot 'em up (shmup) game from KidsCanCode's youtube series https://www.youtube.com/playlist?list=PLsk-HSGFjnaH5yghzu7PcOzm9NhsW0Urw -->
 
 <!-- PROJECT LOGO -->
 <br />
