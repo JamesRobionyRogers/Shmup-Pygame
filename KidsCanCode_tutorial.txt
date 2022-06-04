@@ -1,0 +1,5 @@
+This was a KidsCanCode Tutorial:
+
+Youtube Playlist: https://www.youtube.com/playlist?list=PLsk-HSGFjnaH5yghzu7PcOzm9NhsW0Urw
+
+from 'shmup_v15.py' onwards was made entire by me. 

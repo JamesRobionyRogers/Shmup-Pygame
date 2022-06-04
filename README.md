@@ -1,30 +1,46 @@
-# shmup 
 
-(Code is inside the folder named "shmup")
-I currently have an error when I shoot a meteor (or when i get hit by a meteor), I believe it happens when the explosion animation is trying to happen. Please help if you can, and Thank you very much in advance!      (Note: I am using Python 3.7 is that's any help)
-
-# Errors 
-This is the Error when I shoot a meteor: 
-
-Traceback (most recent call last):
-  File "C:\Users\James\Desktop\Programing\Programing With Python\KidsCanCode Pygame\game_dev\shmup\004_shmup_v10.py", line 263, in <module>
-    expl = Explosion(hit.rect.center, 'lg')
-  File "C:\Users\James\Desktop\Programing\Programing With Python\KidsCanCode Pygame\game_dev\shmup\004_shmup_v10.py", line 170, in __init__
-    self.image = explosion_anim[self.size][0]
-TypeError: 'NoneType' object is not subscriptable
-  
+<!-- PROJECT LOGO -->
+<br />
+<p align="center">
+    <h1 align="center" style="margin-bottom: 0;"> Shoot 'Em' Up Pygame Pre Version 11</h1>
+    <h6 align="center" style="margin-top: -5px;">November 2018</h6>
+</p>
 
 
-And this the Error when I get hit by the meteor:
+Under this `Legacy` branch I have uploaded all of the projects versions back from 2018. The branch will contain all of the files as I stored them on my hardrive. 
+___
 
-Traceback (most recent call last):
-  File "C:\Users\James\Desktop\Programing\Programing With Python\KidsCanCode Pygame\game_dev\shmup\004_shmup_v10.py", line 272, in <module>
-    expl = Explosion(hit.rect.center, 'sm')
-  File "C:\Users\James\Desktop\Programing\Programing With Python\KidsCanCode Pygame\game_dev\shmup\004_shmup_v10.py", line 170, in __init__
-    self.image = explosion_anim[self.size][0]
-TypeError: 'NoneType' object is not subscriptable
-  
-  
-  
-  Thank you very much in advance for any help! 
-  - Thanks, James 
+
+<!-- ABOUT THE PROJECT -->
+## About The Project - How to use it
+
+The workspace contains two asset folders and run files for each version. 
+
+- `imgs`: the folder containing all of the image assets for the game 
+- `snd`: the folder containing all of the sound assets for the game
+
+In order run, open `shmup_vxx.py` and run the file. All classes are contained in the file
+
+
+### Built With
+
+* Python 
+* Pygame
+
+___
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[contributors-shield]: https://img.shields.io/github/contributors/jamisbuggerlugs/Python_Tutorial_Website.svg?style=flat-square
+[contributors-url]: https://github.com/JamisBuggerlugs/Python_Tutorial_Website/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/JamisBuggerlugs/Python_Tutorial_Website.svg?style=flat-square
+[forks-url]: https://github.com/JamisBuggerlugs/Python_Tutorial_Website/network/members
+[stars-shield]: https://img.shields.io/github/stars/JamisBuggerlugs/Python_Tutorial_Website.svg?style=flat-square
+[stars-url]: https://github.com/JamisBuggerlugs/Python_Tutorial_Website/stargazers
+[issues-shield]: https://img.shields.io/github/issues/JamisBuggerlugs/Python_Tutorial_Website.svg?style=flat-square
+[issues-url]: https://github.com/JamisBuggerlugs/Python_Tutorial_Website/issues
+[license-shield]: https://img.shields.io/github/license/JamisBuggerlugs/Python_Tutorial_Website.svg?style=flat-square
+[license-url]: https://github.com/JamisBuggerlugs/Python_Tutorial_Website/blob/master/LICENSE.txt
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
+[linkedin-url]: https://linkedin.com/in/JamisBuggerlugs
+[product-screenshot]: imgs/readme-assets/desktop-home-light.png

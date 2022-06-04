@@ -1,4 +1,4 @@
-# Pygame Shmup Part 10:   Player Lives
+# Pygame Shmup Part 11:  Player Lives
 # Frozen Jam by tgfcoder <https://twitter.com/tgfcoder> licensed under CC-BY-3
 # Art from Kenney.nl
 
@@ -30,14 +30,16 @@ pygame.init()  # initialises pygame
 
 # creates game window (variable a.k.a: screen)
 gameDisplay = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Shmup!  version 10")  # title of the game window
+pygame.display.set_caption("Shmup!  version 11")  # title of the game window
 clock = pygame.time.Clock()
+
 
 font_name = pygame.font.match_font('arail')
 
 
-def draw_text(surf, text, size, x, y):
-    font = pygame.font.Font(font_name, size)
+def draw_text(surf, text, size, x, y, font_type):
+    font_type = pygame.font.match_font(font_type)
+    font = pygame.font.Font(font_type, size)
     text_surface = font.render(text, True, WHITE)
     text_rect = text_surface.get_rect()
     text_rect.midtop = (x, y)
@@ -59,8 +61,16 @@ def draw_shield_bar(surf, x, y, pct):
     outline_rect = pygame.Rect(x, y, BAR_WIDTH, BAR_HEIGHT)
     fill_rect = pygame.Rect(x, y, fill, BAR_HEIGHT)
     pygame.draw.rect(surf, BLUE, fill_rect)
-    # 2 corrosponds to the thickness (giving it a border look)
-    pygame.draw.rect(surf, WHITE, outline_rect, 2)
+    pygame.draw.rect(surf, WHITE, outline_rect, 2)  # 2 corrosponds to the thickness (giving it a border look)
+    draw_text(gameDisplay, f'{int(fill)}%', 20, 135, 9.5, 'chakra petch')
+
+
+def draw_lives(surf, x, y, lives, img):
+    for i in range(lives):
+        img_rect = img.get_rect()
+        img_rect.x = x + 35 * i  # 10 pixel spacing between ships  -  change + to - for revecing the side the ships are taken away from
+        img_rect.y = y
+        surf.blit(img, img_rect)
 
 
 class Player(pygame.sprite.Sprite):
@@ -77,8 +87,16 @@ class Player(pygame.sprite.Sprite):
         self.shield = 100
         self.shoot_delay = 250
         self.last_shot = pygame.time.get_ticks()
+        self.lives = 3
+        self.hidden = False
+        self.hide_timer = pygame.time.get_ticks()
 
     def update(self):
+        # unhide if hidden
+        if self.hidden and pygame.time.get_ticks() - self.hide_timer > 1000:
+            self.hidden = False
+            self.rect.centerx = WIDTH / 2
+            self.rect.bottom = HEIGHT - 10
         # movement [LEFT & RIGHT]
         self.speedx = 0
         keystate = pygame.key.get_pressed()
@@ -104,6 +122,12 @@ class Player(pygame.sprite.Sprite):
             bullet = Bullet(self.rect.centerx, self.rect.top)
             all_sprites.add(bullet)
             bullets.add(bullet)
+
+    def hide(self):
+        # hide the player temporarily
+        self.hidden = True
+        self.hide_timer = pygame.time.get_ticks()
+        self.rect.center = (WIDTH / 2, HEIGHT + 200)
 
 
 class Mob(pygame.sprite.Sprite):
@@ -173,7 +197,7 @@ class Explosion(pygame.sprite.Sprite):
         self.rect.center = center
         self.frame = 0  # change to -1
         self.last_update = pygame.time.get_ticks()
-        self.frame_rate = 50  # change how long the explosion animation takes
+        self.frame_rate = 75  # change how long the explosion animation takes
 
     def update(self):
         now = pygame.time.get_ticks()
@@ -193,6 +217,8 @@ class Explosion(pygame.sprite.Sprite):
 background = pygame.image.load(path.join(img_dir, "starfield.png")).convert()
 background_rect = background.get_rect()
 player_img = pygame.image.load(path.join(img_dir, "playerShip1_orange.png")).convert()
+player_mini_img = pygame.transform.scale(player_img, (25, 19))
+player_mini_img.set_colorkey(BLACK)
 bullet_img = pygame.image.load(path.join(img_dir, "laserRed16.png")).convert()
 meteor_images = []
 meteor_list = ['meteorBrown_big1.png', 'meteorBrown_big2.png', 'meteorBrown_med1.png',
@@ -204,6 +230,8 @@ for img in meteor_list:  # appending the meteor images to the meteor_images list
 explosion_anim = {}
 explosion_anim['lg'] = []
 explosion_anim['sm'] = []
+explosion_anim['player'] = []
+
 for i in range(9):
     filename = f'regularExplosion0{i}.png'  # 'regularExplosion0{}.png'.format(i)
     img = pygame.image.load(path.join(img_dir, filename)).convert()
@@ -213,11 +241,18 @@ for i in range(9):
     img_sm = pygame.transform.scale(img, (32, 32))
     explosion_anim['sm'].append(img_sm)
 
+    filename = f'sonicExplosion0{i}.png'  # 'sonicExplosion0{}.png'.format(i)
+    img = pygame.image.load(path.join(img_dir, filename)).convert()
+    img.set_colorkey(BLACK)
+    explosion_anim['player'].append(img)
+
+
 # Load all game sounds
 shoot_sound = pygame.mixer.Sound(path.join(snd_dir, 'laser_2.wav'))
 expl_sounds = []
 for snd in ['expl_1.wav', 'expl_2.wav']:
     expl_sounds.append(pygame.mixer.Sound(path.join(snd_dir, snd)))
+player_death_sound = pygame.mixer.Sound(path.join(snd_dir, 'rumble1.ogg'))
 # background music
 pygame.mixer.music.load(path.join(snd_dir, 'bg_music.ogg'))
 pygame.mixer.music.set_volume(1)
@@ -265,30 +300,38 @@ while running:
         all_sprites.add(expl)
         newmob()
 
-    # check to see if a mob hit the player
+    # Player Death  -  check to see if a mob hit the player
     hits = pygame.sprite.spritecollide(player, mobs, True, pygame.sprite.collide_circle)
-    # a list starts with nothing in it (False), so when something gets added then... (becomes True)
-    for hit in hits:
+    for hit in hits:  # a list starts with nothing in it (False), so when something gets added then... (becomes True)
         player.shield -= hit.radius * 2
         expl = Explosion(hit.rect.center, 'sm')
         all_sprites.add(expl)
         newmob()
-        if player.shield <= 0:
-            running = False
 
+        if player.shield <= 0:
+            player_death_sound.play()
+            death_explosion = Explosion(player.rect.center, 'player')
+            all_sprites.add(death_explosion)
+            player.hide()
+            player.lives -= 1
+            player.shield = 100
+
+    # if the player died and the explosion has finnished playing
+    if player.lives == 0 and not death_explosion.alive():  # player has no more lives and explosio finnished playing
+        running = False
 
 # Draw / Rendering
     gameDisplay.fill(BLACK)
     gameDisplay.blit(background, background_rect)
     all_sprites.draw(gameDisplay)
-    draw_text(gameDisplay, 'SCORE:  ' + str(score), 25, WIDTH / 2, 10)
 
-    draw_shield_bar(gameDisplay, 5, 5, player.shield)
+    draw_text(gameDisplay, f'SCORE:  {str(score)}', 25, WIDTH / 2, 10, 'ariel')
+    draw_shield_bar(gameDisplay, 8, 8, player.shield)
+    draw_lives(gameDisplay, WIDTH - 100, 8, player.lives, player_mini_img)
 
-    # *after* drawing everything, flip the diaplay
-    pygame.display.flip()
+    pygame.display.flip()  # AFTER drawing everything, flip the diaplay
 
-time.sleep(3)
+# time.sleep(3)
 pygame.quit()
 quit()
 
