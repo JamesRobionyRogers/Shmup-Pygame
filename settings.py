@@ -6,6 +6,9 @@ WIDTH = 480
 HEIGHT = 600
 FPS = 60
 
+POWERUP_TIME = 5000  # 1000 milisecounds == 1 secounds
+MOB_NUM = 9
+
 # Defining colours
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -22,3 +25,4 @@ snd_dir = path.join(path.dirname(__file__), 'snd')
 all_sprites = pygame.sprite.Group()
 bullets = pygame.sprite.Group()
 mobs = pygame.sprite.Group()
+powerups = pygame.sprite.Group()

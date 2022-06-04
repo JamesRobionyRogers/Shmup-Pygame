@@ -13,9 +13,8 @@ class Mob(pygame.sprite.Sprite):
         self.image = self.image_orig.copy()
         self.rect = self.image.get_rect()
         self.radius = int(self.rect.width * 0.85 / 2)  # 85% width / 2
-        # pygame.draw.circle(self.image, RED, self.rect.center, self.radius)  # used to check the circle collistion
 
-        # will not appear half off the screen
+        # Preventing the Mob appearing half off the screen
         self.rect.x = random.randrange(0, WIDTH - self.rect.width)
         self.rect.y = random.randrange(-100, -40)
         self.speedy = random.randrange(1, 8)
@@ -23,6 +22,9 @@ class Mob(pygame.sprite.Sprite):
         self.rot = 0
         self.rot_speed = random.randrange(-8, 8)
         self.last_update = pygame.time.get_ticks()
+
+        pygame.draw.circle(self.image, RED, self.rect.center, self.radius)  # used to check the circle collistion
+
 
     def rotate(self):
         now = pygame.time.get_ticks()
@@ -39,8 +41,9 @@ class Mob(pygame.sprite.Sprite):
         self.rotate()  # comment this line out to take out rotaing
         self.rect.x += self.speedx
         self.rect.y += self.speedy
-        if self.rect.top > HEIGHT + 10 or self.rect.left < -25 or self.rect.right > WIDTH + 25:  # change 25 to 100
-            # if it goes off the bottom, we rerandomize the sprites location
+
+        # Randomising the Mob's location if it goes off the bottom of the screen 
+        if (self.rect.top > HEIGHT + 10) or (self.rect.right < 0) or (self.rect.left > WIDTH):
             self.rect.x = random.randrange(0, WIDTH - self.rect.width)
             self.rect.y = random.randrange(-150, -100)
             self.speedy = random.randrange(1, 8)

@@ -39,7 +39,17 @@ In order run, open `Shmup.py` and run the file
 
 
 ## Tasks Moving Forward
-- [ ] No more 
+- [ ] Implement other enemies (E.g. Space Ships)
+- [ ] Implement a Boss Fight! (E.g Big ship that shoots at you)
+
+###### Suggestions
+
+- [ ] Move forward and backwards 
+- [ ] Make the explosion sound effects quieter
+- [ ] More Powerups // Make existing Powerups better
+
+
+- [ ] Different game modes (E.g Infinite, Levels(Boss Fight), etc... )
 
 
 ___

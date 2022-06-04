@@ -11,10 +11,10 @@ class Bullet(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.bottom = y
         self.rect.centerx = x
-        self.speedy = -10            # change bullet speed
+        self.speedy = 10            # change bullet speed
 
     def update(self):
-        self.rect.y += self.speedy
-        # Lill the bullet if it moves off the top of the screen
+        self.rect.y -= self.speedy
+        # Kill the bullet if it moves off the top of the screen
         if self.rect.bottom < 0:
             self.kill()
